@@ -1,0 +1,58 @@
+import numpy as np
+import pandas as pd
+bios = pd.read_csv('C:/Users/Mr. Ahmed/Desktop/gpt practice/pandas/bios.csv')
+coffee = pd.read_csv('C:/Users/Mr. Ahmed/Desktop/gpt practice/pandas/coffee.csv')
+# print(bios["born_city"].value_counts())
+b = bios[bios['born_country']=="USA"]["born_region"]
+# c = bios.query("born_country == 'USA' and born_region")
+# print(b)    
+coffee["price"] = 3.99
+
+# If you want to like get data of speicific column through another column.
+s = coffee.groupby(["Coffee Type"])['Units Sold'].mean()
+# print(s)
+# If you want to get multiple operation of multiple columns
+p = coffee.groupby(['Coffee Type']).agg({"Units Sold": 'sum' , 'price' : 'sum'})
+# u = coffee.groupby[(["Coffee Type"])['Units Sold','price']].sum()
+# print(p)
+coffee["New_Price"] = np.where(coffee["Coffee Type"]=="Espresso",7.99,3.99)
+coffee["Units Sold"] = pd.to_numeric(coffee["Units Sold"])
+coffee['Revenue'] = coffee['Units Sold'] * coffee['New_Price']
+# I don't know what pivot is but I am trying to learn
+piv = coffee.pivot(columns='Coffee Type',index= 'Day',values="Revenue")
+piv.sum(axis=1)
+piv.mean()
+# print(piv)
+
+# Here comes our bios data for aggregating
+bios['born_date'] = pd.to_datetime(bios['born_date'])
+han = bios.groupby(bios['born_date'].dt.year)['name'].count()
+print(han)
+# to reset the value index we can do 
+bios.groupby(bios['born_date'].dt.year)['name'].count().reset_index()
+# If we want to sort the values
+sort1 = bios.groupby(bios['born_date'].dt.year)['name'].count().reset_index().sort_values('name',ascending=False)
+# print(sort1)
+# bios['born_date'] = pd.to_datetime(bios['born_date'])
+# bios["month_born"] = pd.to_datetime(bios['born_date'])
+bios["month_born"] = bios['born_date'].dt.month
+bios["year_born"] = bios['born_date'].dt.year
+sort2 = bios.groupby([bios['year_born'],bios["month_born"]])['name'].count().reset_index().sort_values('name',ascending=False)
+# print(sort2)
+
+# Advanced Functionality
+# .shift() .rolling() .cumsum() .rank()
+coffee['Yesterday_rev'] = coffee['Revenue'].shift(2)
+coffee["pct_change"] = coffee['Revenue'] / coffee['Yesterday_rev'] * 100
+# print(coffee)
+
+# for rank function
+# if you want to make the tallest person rank no. one so you have to make it ascending false
+bios['hei_rank'] = bios["height_cm"].rank(ascending=False)
+a = bios.sort_values(['hei_rank'])
+# print(a)
+
+# for rolling function
+latte = coffee[coffee['Coffee Type']=="Latte"].copy()
+latte['3day'] = latte["Units Sold"].rolling(3).sum()
+# print(latte)
