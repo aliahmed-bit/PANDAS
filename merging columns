@@ -1,0 +1,32 @@
+import pandas as pd
+import numpy as np
+coffee = pd.read_csv("C:/Users/Mr. Ahmed/Desktop/gpt practice/pandas/coffee.csv")
+bios = pd.read_csv("C:/Users/Mr. Ahmed/Desktop/gpt practice/pandas/bios.csv")
+usa = bios.query("born_country == 'USA'").copy()
+fra = bios.query("born_country == 'France'").copy()
+new = pd.concat([usa,fra])
+# print(new)
+
+pd.to_datetime(coffee["Units Sold"])
+# print(coffee.isna().sum())
+# coffee["Price"] = 3.99
+coffee["New_Price"] = np.where(coffee["Coffee Type"] == "Espresso",6.99,4.99)
+coffee["revenue"] = coffee["Units Sold"] * coffee["New_Price"]
+
+# to handle null values
+coffee.loc[[0,1],"Units Sold"] = np.nan
+coffee.loc[[2,3],"Coffee Type"] = np.nan
+# coffee.fillna(coffee["Units Sold"].mean(),inplace=True)
+# to drop the whole row
+# a = coffee.dropna()
+# print(a)
+# to drop nan values from specific column
+# coffee.dropna(subset=['Units Sold'],inplace=True)
+# print(coffee)
+# to find nan values
+print(coffee[coffee["Coffee Type"].isna()])
+
+# to find without nan values
+coffee[coffee["Units Sold"].notna()]
+
+# Aggeragating data
