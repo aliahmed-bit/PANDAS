@@ -1,0 +1,39 @@
+Tasks to complete:
+🔹 Level 1 — Basic
+
+Show the first 5 rows
+Check shape, column names, and data types
+Show all players from Pakistan
+Show players older than 27
+Show only name, country, and runs columns
+
+🔹 Level 2 — Filtering
+
+Show players with more than 100 matches AND more than 3000 runs
+Show players from Pakistan OR India
+Show players with wickets between 20 and 55
+Use .query() to find players aged between 24 and 30
+Use .query() to find Pakistani players with salary above 35000
+
+🔹 Level 3 — Adding Columns
+
+Add a batting_avg column → runs / matches
+Add a height_category column → short / average / tall using apply()
+Add a performance column → if runs > 3000 and wickets > 20 → "allrounder", if runs > 3000 → "batsman", if wickets > 20 → "bowler", else → "developing"
+Add a experience column → if matches > 100 → "senior" else "junior"
+
+🔹 Level 4 — GroupBy & Aggregation
+
+Average runs per country
+Total wickets per country
+Count of players per country
+Find the highest paid player in each country
+
+🔹 Level 5 — Sorting & Filtering
+
+Sort players by runs (descending)
+Top 3 players by batting average
+Players with above average salary (use the column mean)
+Drop the height_cm column and save as a new df
+
+
