@@ -1,0 +1,17 @@
+import numpy as np
+import pandas as pd
+stu = pd.DataFrame([["kimberly",17,"A","Brooklin"],["ashok",39,"F","South India"],["Dickson",69,"A+","Thailand"]
+                    ,["Dipshit",20,"B","Gwadar"]],columns=["Name","Age","Grade","City"])
+coffee = pd.read_csv('C:/Users/Mr. Ahmed/Desktop/gpt practice/pandas/coffee.csv')
+# coffee.rename(columns={"Units Sold":"Hanjjjiii"},inplace=True)
+coffee["Price"] = 4.99
+coffee["New_Price"] = np.where(coffee["Coffee Type"]=="Espresso",7.99,3.99)
+print(coffee)
+# print(coffee)
+coffee.drop(columns={"Price"},inplace=True)
+# print(coffee[["Day","Coffee Type","Units Sold","New Price"]])
+coffee.drop(13,inplace=True)
+# print(coffee)
+coffee["Units Sold"] = pd.to_numeric(coffee["Units Sold"])
+coffee['Revenue'] = coffee['Units Sold'] * coffee['New_Price']
+# print(coffee)
