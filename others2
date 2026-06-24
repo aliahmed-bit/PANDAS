@@ -1,0 +1,35 @@
+import pandas as pd
+import numpy as np
+bios = pd.read_csv('C:/Users/Mr. Ahmed/Desktop/gpt practice/pandas/bios.csv')
+# print(bios.head())
+bios1 = bios.copy()
+bios1["first_name"] = bios1["name"].str.split(' ').str[0]
+print(bios1)
+# print(bios1)
+bios1.drop(columns={"athlete_id"},inplace=True)
+# print(bios1.head())
+
+# Hard way for conditions
+a = bios1[bios1["first_name"] == "Keith"]
+a = bios1[bios1["first_name"]  ==  "Keith"]
+# b = bios1.query("first_name == Ke)
+# print(a)
+# Easy way for conditions
+b = bios1.query("first_name == 'Keith'")
+# print(b)
+
+# best way to work with dates is to convert them in date time format so you can take any year, month or day.  
+bios1["born_time"] = pd.to_datetime(bios1["born_date"])
+# print(bios1.info())
+#  you can also select the format of the date and months
+bios1["born_time"] = pd.to_datetime(bios1["born_date"],format="%Y-%m-%d")
+# this function will select only year he was born
+bios1["year"] = bios1["born_time"].dt.year
+bios1["year"] = bios1["born_time"].dt.is_leap_year
+print(bios1)
+bios1.drop(columns={"born_date"},inplace=True)
+# bios1.query("year == True")
+# print(bios1)
+bios1["last_name"] = bios1["name"].str.split(' ').str[1]
+bios1.to_csv('C:/Users/Mr. Ahmed/Desktop/gpt practice/pandas/rando,.csv')
+# print(bios1)
