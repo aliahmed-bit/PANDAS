@@ -1,0 +1,60 @@
+import pandas as pd
+import numpy as np
+bios = pd.read_csv("C:/Users/Mr. Ahmed/Desktop/gpt practice/pandas/bios.csv")
+bios["avg_height"] = bios["height_cm"].apply(lambda x:"short" if x < 165 else ("average" if x < 180 else "tall"))
+# print(bios)
+
+# if we want to apply multiple conditions across the rows and diiferent columns 
+def binod(x):
+    if x["height_cm"] < 170 and x["weight_kg"] < 70:
+        return "light weight"
+    elif x["height_cm"] < 180 and x["weight_kg"] < 80:
+        return "middle weight"
+    else:
+        return "heavy weight"
+bios["category"] = bios.apply(binod,axis=1)
+bios.to_csv("C:/Users/Mr. Ahmed/Desktop/gpt practice/pandas/rando,.csv")
+
+# if we want to apply multiple conditions across the columns 
+# bios["new_height"] = bios["height_cm"].apply(lambda a: "Short" if a < 160 else("Average" if a < 180 else "Tall"))
+def hanjjiii(x):
+    if x < 150:
+        return "very short"
+    elif x < 165:
+        return "short"
+    elif x < 175:
+        return "average"
+    elif x < 185:
+        return "tall"
+    else:
+        return "very tall"
+
+bios["avg_height"] = bios["height_cm"].apply(hanjjiii)
+# print(bios)
+
+def nahi(x):
+    if x == "Meulan":
+        return "chutiyaaa"
+    elif x == "Biarritz":
+        return "Hat be"
+    elif x == "Wandsworth":
+        return "teri bhen"
+    else:
+        return "tu bach gya" 
+# bios["meri_maarzi"] = bios["born_city"].apply(nahi)
+# bios["meri_maarzi"] = bios.apply(nahi)
+# print(bios)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
