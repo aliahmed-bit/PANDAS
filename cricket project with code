@@ -1,0 +1,127 @@
+import pandas as pd
+import numpy as np
+cricket = pd.read_csv('C:/Users/Mr. Ahmed/Desktop/gpt practice/pandas/cricket.csv')
+# print(cricket.head())
+
+# lvl 1:1
+# Show first 5 rows of data
+cricket.head(5)
+
+# lv1:2
+# check shape
+cricket.shape
+cricket.columns
+cricket.dtypes
+
+# lvl 1:3
+# Show all players from Pakistan
+print(cricket[cricket["country"] == "Pakistan"])
+
+# Show players older than 27
+cricket.query("age > 27")
+
+# Show only name, country, and runs columns
+c = cricket.loc[:,["name","country","runs"]]
+# another way to do it
+cricket[["name","country","runs"]]
+
+#  Level 2 — Filtering
+# Show players with more than 100 matches AND more than 3000 runs
+cricket[cricket["matches"] > 100][cricket["runs"]>3000]
+# another way to do that
+f = cricket.query("matches > 100 and runs > 3000")
+# f["name"]
+
+# Show players from Pakistan OR India
+n = cricket.query("country == 'Pakistan' or country == 'India'")
+# cricket[(cricket["country"] == "Pakistan") | (cricket["country"] == 'India')]
+
+# another way to do it is to use isin function
+cricket[cricket["country"].isin(["Pakistan","India"])]
+# c = cricket[cricket["country"].isin(["Pakistan", "India"])]
+
+# Show players with wickets between 20 and 55
+cricket[cricket["wickets"]>=20][cricket["wickets"]<=55]
+
+# Use .query() to find Pakistani players with salary above 35000
+cricket.query("country == 'Pakistan' and salary_usd > 35000")
+
+# Use .query() to find players aged between 24 and 30
+cricket.query("age > 24 and age < 30")
+
+#  Level 3 — Adding Columns
+# Add a batting_avg column → runs / matches
+cricket["batting_avg"] = cricket["runs"] / cricket["matches"]
+cricket["batting_avg"]
+
+def height(x):
+    if x["height_cm"] > 175:
+        return "Tall"
+    elif x["height_cm"] > 165:
+        return "average"
+    else:
+        return "Short"
+# cricket["height_cat"] = cricket.apply(height,axis=1)
+# Aother way to do this
+def nahi(x):
+    if x > 175:
+        return "Tall"
+    elif x > 165:
+        return "average"
+    else:
+        return "Short"
+cricket["height_cat"] = cricket["height_cm"].apply(nahi)
+cricket
+
+# Add a performance column → if runs > 3000 and wickets > 20 → "allrounder", 
+# if runs > 3000 → "batsman", if wickets > 20 → "bowler", else → "developing"
+def perfom(x):
+    if x["runs"] > 3000 and x["wickets"] > 20:
+        return "allrounder"
+    elif x["runs"] > 3000:
+        return "Batsman"
+    elif x["wickets"] > 20:
+        return "bowler"
+    else:
+        return "Developing"
+cricket["Perfomance"] = cricket.apply(perfom,axis=1)
+cricket
+
+# Add a experience column → if matches > 100 → "senior" else "junior"
+cricket["experience"] = np.where(cricket["matches"] > 100,"senior","junior")
+cricket
+
+# Level 4 — GroupBy & Aggregation
+# Average runs per country
+avg = cricket.groupby(["country"])["runs"].mean()
+avg
+
+# Total wickets per country
+wick = cricket.groupby(["country"])["wickets"].sum()
+wick
+
+# Count of players per country
+players = cricket.groupby(["country"])["name"].count()
+players
+
+# Find the highest paid player in each country
+high_paid = cricket.groupby(["country"])["salary_usd"].idxmax()
+cricket.loc[high_paid,["name","country","salary_usd"]]
+# another way to do this 
+a = cricket.sort_values("salary_usd",ascending=False).groupby("country").first()
+# a
+
+# Level 5 — Sorting & Filtering
+# Sort players by runs (descending)
+sort_run = cricket.sort_values("runs",ascending=False)
+# sort_run[["name","country","runs"]]
+sort_run
+
+# Top 3 players by batting average
+top = cricket.sort_values("batting_avg",ascending=False).head(3)
+top
+
+# Players with above average salary (use the column mean)
+avg = cricket["salary_usd"].mean()
+avg
+cricket[cricket["salary_usd"]> avg]
